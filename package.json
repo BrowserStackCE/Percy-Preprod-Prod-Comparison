@@ -1,0 +1,16 @@
+{
+  "name": "percy-sample-vfcorp",
+  "version": "1.0.0",
+  "description": "VFC Demo",
+  "main": "index.js",
+  "scripts": {
+    "pre-prod-test": "npx percy exec --verbose  --  mvn test -P pre-prod",
+    "prod-test": "npx percy exec --verbose  --  mvn test -P pre-prod && BUILD_ID=$(cat output.txt) && npx percy-report generate $BUILD_ID --download-images"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@percy/cli": "^1.31.1",
+    "@percy/report": "1.0.6"
+  }
+}

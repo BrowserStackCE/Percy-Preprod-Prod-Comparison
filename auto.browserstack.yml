@@ -1,0 +1,44 @@
+userName:
+accessKey:
+
+projectName: VFCorp-Diff
+buildName: Auto run strategy with Percy Sample
+buildIdentifier: '#${BUILD_NUMBER}'
+
+framework: cucumber-testng
+
+
+platforms:
+  - browserName: Chrome
+    os: Windows
+    osVersion: 10
+    browserVersion: 138
+  - browserName: Firefox
+    os: Windows
+    osVersion: 10
+    browserVersion: latest
+#    chromeOptions:
+#      args:
+#        - --disable-blink-features: AutomationControlled
+#        - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+
+parallelsPerPlatform: 40
+
+source: testng:archetype-setup:v1.5
+
+browserstackLocal: false
+
+buildTag: A11y issue
+debug: true
+networkLogs: true
+testObservability: true
+autoAcceptAlerts: true
+
+percy: false
+#percyCaptureMode: manual
+
+networkLogsOptions:
+  captureContent: false
+logLevel: debug
+idleTimeout: 300
+browserstackAutomation: true

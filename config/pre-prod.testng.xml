@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Pre Prod Test" parallel="methods" thread-count="40" data-provider-thread-count="40">
+    <test name="Pre-Prod-Run">
+        <classes>
+            <class name="com.browserstack.PercySample.VFCorp.PreProdRunner" />
+        </classes>
+    </test>
+</suite>
