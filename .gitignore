@@ -1,0 +1,22 @@
+# Java build files
+/target/
+*.class
+
+# Logs
+*.log
+
+# IDE settings
+.idea/
+.vscode/
+*.iml
+
+.DS_Store
+.env
+
+/Reports/
+browserstack.err
+node_modules/
+package-lock.json
+src/.DS_Store
+
+
