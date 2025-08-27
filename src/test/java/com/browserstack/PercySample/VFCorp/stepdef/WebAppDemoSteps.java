@@ -22,6 +22,8 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -44,6 +46,7 @@ public class WebAppDemoSteps {
     Percy percy;
     private WebDriver driver;
     String productOnScreenText, productOnCartText;
+    private static final Logger logger = LogManager.getLogger(WebAppDemoSteps.class);
 
     @Before
     public void setUp() throws MalformedURLException {
@@ -68,6 +71,7 @@ public class WebAppDemoSteps {
         options.put("sync", true);
         ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 80)");
         PercySnapshotUtils.takeSapshot(percy,"Home Page", options);
+
     }
 
 
@@ -75,17 +79,24 @@ public class WebAppDemoSteps {
     public void I_add_products_to_cart() throws Throwable {
         productOnScreenText = driver.findElement(By.xpath("//*[@id=\"1\"]/p")).getText();
         driver.findElement(By.xpath("//*[@id=\"1\"]/div[4]")).click();
-
-
     }
 
     @And("I validate the if the cart is open")
     public void I_validate_the_if_the_cart_is_open() throws Throwable {
         Assert.assertTrue(driver.findElement(By.cssSelector(".float\\-cart__content")).isDisplayed());
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        WebElement buyBtn = wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.cssSelector(".buy-btn")));
+        buyBtn.click();
+        WebElement loginBtn= wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("login-btn")));
+        if(!loginBtn.isDisplayed()) {
+            System.out.println("login button not present");
+        }else {
             HashMap<String, Object> options = new HashMap<String, Object>();
             options.put("fullPage", true);
             options.put("sync", true);
             PercySnapshotUtils.takeSapshot(percy, "Cart Page", options);
+        }
     }
 
     @And("I validate the product added to cart")
@@ -171,11 +182,16 @@ public class WebAppDemoSteps {
     @After
     public void teardown(Scenario scenario) throws Exception {
         System.out.println("TearDown called");
+        logger.info("TearDown called");
+
         if(driver!=null) {
+            logger.info("driver not null");
             try {
                 driver.quit();
             }finally {
+                logger.info("Calling Finalize Snapshots");
                 PercySnapshotUtils.finalizeSnapshots();
+                logger.info("End of Finalize Snapshots");
             }
 
         }

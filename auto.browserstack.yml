@@ -16,7 +16,7 @@ platforms:
   - browserName: Firefox
     os: Windows
     osVersion: 10
-    browserVersion: latest
+    browserVersion: 142
 #    chromeOptions:
 #      args:
 #        - --disable-blink-features: AutomationControlled

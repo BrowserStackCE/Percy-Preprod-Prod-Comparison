@@ -3,13 +3,15 @@ package com.browserstack.PercySample.VFCorp.utils;
 import com.browserstack.PercySample.VFCorp.PageObjects.DeviceResult;
 import com.browserstack.PercySample.VFCorp.PageObjects.PageResult;
 import de.vandermeer.asciitable.AsciiTable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
 public class PercyReportGenerator {
-
+    private static final Logger logger = LogManager.getLogger(PercyReportGenerator.class);
 
     public  String buildId;
     public List<PageResult> summary;
@@ -73,9 +75,12 @@ public class PercyReportGenerator {
     public void summarize()
     {
         System.out.println("Summarize method called");
+        logger.info("Summarize method called");
         HashMap<String, String> results = new HashMap<>();
             for(DeviceResult device: details)
             {
+                System.out.println("Device Name => "+device.deviceName);
+                logger.info("Device Name => "+device.deviceName);
                 for(PageResult page: device.getPages())
                 {
                     if(results.get(page.pageName) ==null)
@@ -128,6 +133,7 @@ public class PercyReportGenerator {
         String html = generateHtml(summary, details);
 
         System.out.println("Summary report size =>"+summary.size()+"; Details report size =>"+details.size());
+        logger.info("Summary report size =>"+summary.size()+"; Details report size =>"+details.size());
 
         AsciiTable at = new AsciiTable();
         at.addRule();
@@ -161,6 +167,22 @@ public class PercyReportGenerator {
 
     private static String generateHtml(List<PageResult> summary, List<DeviceResult> details) {
         System.out.println("generateHtml method called");
+        logger.info("generateHtml method called");
+
+        logger.info("****PageResult summary****");
+        for (PageResult pr : summary){
+            logger.info(pr.pageName+"|"+pr.status+"|"+pr.diffRatio);
+    }
+        logger.info("****End of summary****");
+
+        logger.info("****PageResult summary****");
+        for (DeviceResult dr : details) {
+            for(PageResult pr: dr.getPages())
+            {
+                logger.info(dr.deviceName+"|"+pr.status+"|"+pr.pageName+"|"+pr.diffRatio);
+            }
+        }
+        logger.info("****End of summary****");
 
         StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE html><html lang=\"en\"><head>")
